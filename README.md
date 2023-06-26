@@ -71,8 +71,5 @@ $ curl -kv http://localhost:8080/get-user?name=lele
 {"name":"lele","age":14,"address":"Jogja"} 
 ```
 
-Find Address using Fuzzy search. For this sample, we are using the word `Jogjon`, but application is able to give `Jogja` as result.
-```
-$ curl -kv http://localhost:8080/find-address?address=Jogjon
-{"name":"lele","age":14,"address":"Jogja"} 
-```
+Sample data stored on `user-cache`
+![user-cache-explorer](images/user-cache.png)
