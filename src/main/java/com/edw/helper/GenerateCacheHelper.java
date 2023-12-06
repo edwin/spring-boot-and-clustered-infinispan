@@ -1,5 +1,6 @@
 package com.edw.helper;
 
+import com.edw.bean.User;
 import jakarta.annotation.PostConstruct;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,17 +44,17 @@ public class GenerateCacheHelper {
     public void sendToCache() {
         executor.execute(() -> {
             for (String name : cache01List) {
-                // send this to rhdg
+                cacheManager.getCache("user-cache").put(name, new User(name, 17, "Jakarta"));
             }
         });
         executor.execute(() -> {
             for (String name : cache02List) {
-                // send this to rhdg
+                cacheManager.getCache("user-cache").put(name, new User(name, 18, "Jakarta"));
             }
         });
         executor.execute(() -> {
             for (String name : cache03List) {
-                // send this to rhdg
+                cacheManager.getCache("user-cache").put(name, new User(name, 19, "Jakarta"));
             }
         });
     }
