@@ -49,12 +49,12 @@ public class GenerateCacheHelper {
         });
         executor.execute(() -> {
             for (String name : cache02List) {
-                cacheManager.getCache("user-cache").put(name, new User(name, 18, "Jakarta"));
+                cacheManager.getCache("user-cache").put(name, new User(name, 18, "Bandung"));
             }
         });
         executor.execute(() -> {
             for (String name : cache03List) {
-                cacheManager.getCache("user-cache").put(name, new User(name, 19, "Jakarta"));
+                cacheManager.getCache("user-cache").put(name, new User(name, 19, "Semarang"));
             }
         });
     }
