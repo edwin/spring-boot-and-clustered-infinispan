@@ -48,6 +48,12 @@ We are using below XML configuration for setting up a distributed cache.
     <transaction mode="NON_XA" auto-commit="true" stop-timeout="30000" locking="PESSIMISTIC" reaper-interval="30000" complete-timeout="60000" notifications="true" transaction-manager-lookup="org.infinispan.transaction.lookup.GenericTransactionManagerLookup"/>
     <memory storage="OFF_HEAP"/>
     <state-transfer timeout="300000"/>
+    <indexing enabled="true"
+              storage="filesystem" path="user-cache">
+        <indexed-entities>
+            <indexed-entity>user.User</indexed-entity>
+        </indexed-entities>
+    </indexing>
 </replicated-cache>
 ```
 
