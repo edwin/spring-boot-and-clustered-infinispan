@@ -39,14 +39,16 @@ We can validate the result after we login into Infinispan server,
 We are using below XML configuration for setting up a distributed cache.
 ```xml
 <?xml version="1.0"?>
-<distributed-cache name="user-cache" owners="2" mode="SYNC" statistics="true">
+<replicated-cache name="user-cache" mode="SYNC" remote-timeout="300000" statistics="true">
     <encoding>
         <key media-type="application/x-protostream"/>
         <value media-type="application/x-protostream"/>
     </encoding>
-    <locking isolation="REPEATABLE_READ"/>
+    <locking concurrency-level="1000" isolation="READ_COMMITTED" acquire-timeout="60000" striping="false"/>
+    <transaction mode="NON_XA" auto-commit="true" stop-timeout="30000" locking="PESSIMISTIC" reaper-interval="30000" complete-timeout="60000" notifications="true" transaction-manager-lookup="org.infinispan.transaction.lookup.GenericTransactionManagerLookup"/>
     <memory storage="OFF_HEAP"/>
-</distributed-cache>
+    <state-transfer timeout="300000"/>
+</replicated-cache>
 ```
 
 ## Spring Boot Configuration
