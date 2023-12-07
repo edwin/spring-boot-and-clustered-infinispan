@@ -6,17 +6,15 @@ import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileCopyUtils;
-import org.springframework.util.ResourceUtils;
 
-import java.io.File;
+import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.stream.Collectors;
 
 /**
  * <pre>
@@ -40,9 +38,19 @@ public class GenerateCacheHelper {
 
     @PostConstruct
     public void generateInitialData() throws Exception {
-        cache01List = Files.readAllLines(new File("cache01.txt").toPath());
-        cache02List = Files.readAllLines(new File("cache02.txt").toPath());
-        cache03List = Files.readAllLines(new File("cache03.txt").toPath());
+        populateData("cache01.txt", cache01List);
+        populateData("cache02.txt", cache02List);
+        populateData("cache03.txt", cache03List);
+
+    }
+
+    private void populateData(String filename, List array) throws Exception {
+        try(BufferedReader bufferedReader = new BufferedReader(
+                new InputStreamReader(
+                        new ClassPathResource("classpath:"+filename).getInputStream(), StandardCharsets.UTF_8)
+        )) {
+            array.addAll(bufferedReader.lines().collect(Collectors.toList()));
+        }
     }
 
     public void sendToCache() {
