@@ -42,18 +42,25 @@ public class GenerateCacheHelper {
     }
 
     public void sendToCache() {
+        System.out.println("cache01List has "+cache01List.size());
+        System.out.println("cache02List has "+cache02List.size());
+        System.out.println("cache03List has "+cache03List.size());
+
         executor.execute(() -> {
             for (String name : cache01List) {
+                System.out.println("= procssesing "+name);
                 cacheManager.getCache("user-cache").put(name, new User(name, 17, "Jakarta"));
             }
         });
         executor.execute(() -> {
             for (String name : cache02List) {
+                System.out.println("= = procssesing "+name);
                 cacheManager.getCache("user-cache").put(name, new User(name, 18, "Bandung"));
             }
         });
         executor.execute(() -> {
             for (String name : cache03List) {
+                System.out.println("= = = procssesing "+name);
                 cacheManager.getCache("user-cache").put(name, new User(name, 19, "Semarang"));
             }
         });
