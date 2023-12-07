@@ -4,10 +4,14 @@ import com.edw.bean.User;
 import jakarta.annotation.PostConstruct;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,9 +40,9 @@ public class GenerateCacheHelper {
 
     @PostConstruct
     public void generateInitialData() throws Exception {
-        cache01List = Files.readAllLines(ResourceUtils.getFile("classpath:cache01.txt").toPath());
-        cache02List = Files.readAllLines(ResourceUtils.getFile("classpath:cache02.txt").toPath());
-        cache03List = Files.readAllLines(ResourceUtils.getFile("classpath:cache03.txt").toPath());
+        cache01List = Files.readAllLines(new File("cache01.txt").toPath());
+        cache02List = Files.readAllLines(new File("cache02.txt").toPath());
+        cache03List = Files.readAllLines(new File("cache03.txt").toPath());
     }
 
     public void sendToCache() {
