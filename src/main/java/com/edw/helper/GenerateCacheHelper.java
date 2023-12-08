@@ -10,8 +10,7 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.Collectors;
@@ -30,50 +29,37 @@ public class GenerateCacheHelper {
     @Autowired
     private RemoteCacheManager cacheManager;
 
-    private List<String> cache01List = new ArrayList();
-    private List<String> cache02List = new ArrayList();
-    private List<String> cache03List = new ArrayList();
-
     private ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(3);
 
-    @PostConstruct
-    public void generateInitialData() throws Exception {
-        populateData("cache01.txt", cache01List);
-        populateData("cache02.txt", cache02List);
-        populateData("cache03.txt", cache03List);
-
-    }
-
-    private void populateData(String filename, List array) throws Exception {
-        try(BufferedReader bufferedReader = new BufferedReader(
-                new InputStreamReader(
-                        new ClassPathResource("classpath:"+filename).getInputStream(), StandardCharsets.UTF_8)
-        )) {
-            array.addAll(bufferedReader.lines().collect(Collectors.toList()));
-        }
-    }
-
     public void sendToCache() {
-        System.out.println("cache01List has "+cache01List.size());
-        System.out.println("cache02List has "+cache02List.size());
-        System.out.println("cache03List has "+cache03List.size());
-
         executor.execute(() -> {
-            for (String name : cache01List) {
-                System.out.println("= procssesing "+name);
-                cacheManager.getCache("user-cache").put(name, new User(name, 17, "Jakarta"));
+            for (int i = 0 ; i < 100; i++) {
+                Map<String, User> hashMap = new HashMap();
+                for (int j = 0 ; j < 5000; j++) {
+                    hashMap.put(UUID.randomUUID().toString(), new User(UUID.randomUUID().toString(), 17, "Jakarta"));
+                }
+                System.out.println(" = processing "+i);
+                cacheManager.getCache("user-cache").putAll(hashMap);
             }
         });
         executor.execute(() -> {
-            for (String name : cache02List) {
-                System.out.println("= = procssesing "+name);
-                cacheManager.getCache("user-cache").put(name, new User(name, 18, "Bandung"));
+            for (int i = 0 ; i < 100; i++) {
+                Map<String, User> hashMap = new HashMap();
+                for (int j = 0 ; j < 5000; j++) {
+                    hashMap.put(UUID.randomUUID().toString(), new User(UUID.randomUUID().toString(), 19, "Tangerang"));
+                }
+                System.out.println(" = = processing "+i);
+                cacheManager.getCache("user-cache").putAll(hashMap);
             }
         });
         executor.execute(() -> {
-            for (String name : cache03List) {
-                System.out.println("= = = procssesing "+name);
-                cacheManager.getCache("user-cache").put(name, new User(name, 19, "Semarang"));
+            for (int i = 0 ; i < 100; i++) {
+                Map<String, User> hashMap = new HashMap();
+                for (int j = 0 ; j < 5000; j++) {
+                    hashMap.put(UUID.randomUUID().toString(), new User(UUID.randomUUID().toString(), 21, "Bandung"));
+                }
+                System.out.println(" = = = processing "+i);
+                cacheManager.getCache("user-cache").putAll(hashMap);
             }
         });
     }
