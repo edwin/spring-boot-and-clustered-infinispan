@@ -13,7 +13,7 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <version.infinispan>14.0.7.Final</version.infinispan>
+        <version.infinispan>13.0.10.Final</version.infinispan>
         <version.protostream>4.6.2.Final</version.protostream>
         <version.spring.boot3>3.0.4</version.spring.boot3>
 
@@ -50,7 +50,7 @@
         <!-- infinispan -->
         <dependency>
             <groupId>org.infinispan</groupId>
-            <artifactId>infinispan-spring-boot3-starter-remote</artifactId>
+            <artifactId>infinispan-spring-boot-starter-remote</artifactId>
         </dependency>
         <dependency>
             <groupId>org.infinispan</groupId>
@@ -70,8 +70,9 @@
             <artifactId>infinispan-client-hotrod</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.infinispan</groupId>
-            <artifactId>infinispan-api</artifactId>
+            <groupId>javax.transaction</groupId>
+            <artifactId>jta</artifactId>
+            <version>1.1</version>
         </dependency>
 
     </dependencies>

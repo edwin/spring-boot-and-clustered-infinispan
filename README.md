@@ -33,7 +33,7 @@ We can validate the result after we login into Infinispan server,
 
 ## Frameworks
 - Spring Boot 3.0.4
-- Infinispan 13.0.10.Final and 14.0.7.Final
+- Infinispan 13.0.10.Final
 
 ## Infinispan Configuration
 We are using below XML configuration for setting up a distributed cache.
@@ -58,12 +58,18 @@ We are using below XML configuration for setting up a distributed cache.
 ```
 
 ## Spring Boot Configuration
-We can put all servers that are members of the cluster on the `server-list` key.
-```properties
-infinispan.remote.server-list=172.17.0.2:11222;172.17.0.3:11222;172.17.0.4:11222
-infinispan.remote.auth-username=admin
-infinispan.remote.auth-password=password
-infinispan.remote.marshaller=org.infinispan.commons.marshall.ProtoStreamMarshaller
+We can put all servers that are members of the cluster on the `remoteCacheManager` method.
+```java
+    @Bean
+public RemoteCacheManager remoteCacheManager() {
+        return new RemoteCacheManager(
+        new org.infinispan.client.hotrod.configuration.ConfigurationBuilder()
+        .addServers("172.17.0.2:11222;172.17.0.3:11222;172.17.0.4:11222")
+        .security().authentication().username("admin").password("password")
+        .clientIntelligence(ClientIntelligence.HASH_DISTRIBUTION_AWARE)
+        .marshaller(ProtoStreamMarshaller.class)
+        .build());
+        }
 ```
 
 ## How to Test

@@ -1,5 +1,7 @@
 package com.edw.config;
 
+import org.infinispan.client.hotrod.RemoteCacheManager;
+import org.infinispan.client.hotrod.configuration.ClientIntelligence;
 import org.infinispan.commons.marshall.ProtoStreamMarshaller;
 import org.infinispan.spring.starter.remote.InfinispanRemoteCacheCustomizer;
 import org.springframework.context.annotation.Bean;
@@ -23,5 +25,16 @@ public class InfinispanConfiguration {
         return b -> {
             b.remoteCache("user-cache").marshaller(ProtoStreamMarshaller.class);
         };
+    }
+
+    @Bean
+    public RemoteCacheManager remoteCacheManager() {
+        return new RemoteCacheManager(
+                new org.infinispan.client.hotrod.configuration.ConfigurationBuilder()
+                        .addServers("172.17.0.2:11222;172.17.0.3:11222;172.17.0.4:11222")
+                        .security().authentication().username("admin").password("password")
+                        .clientIntelligence(ClientIntelligence.HASH_DISTRIBUTION_AWARE)
+                        .marshaller(ProtoStreamMarshaller.class)
+                        .build());
     }
 }
