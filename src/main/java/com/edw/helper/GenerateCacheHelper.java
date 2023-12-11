@@ -4,6 +4,8 @@ import com.edw.bean.User;
 import org.infinispan.client.hotrod.MetadataValue;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,8 @@ public class GenerateCacheHelper {
     @Autowired
     private RemoteCacheManager cacheManager;
 
+    private Logger logger = LoggerFactory.getLogger(GenerateCacheHelper.class);
+
     private ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
 
     public void sendToCache() {
@@ -35,7 +39,7 @@ public class GenerateCacheHelper {
                 for (int j = 0 ; j < 1000; j++) {
                     hashMap.put(UUID.randomUUID().toString(), new User(UUID.randomUUID().toString(), 17, "Jakarta"));
                 }
-                System.out.println(" = processing "+i);
+                logger.info(" = processing "+i);
                 cache.putAll(hashMap);
             }
         });
@@ -45,7 +49,7 @@ public class GenerateCacheHelper {
                 for (int j = 0 ; j < 1000; j++) {
                     hashMap.put(UUID.randomUUID().toString(), new User(UUID.randomUUID().toString(), 19, "Tangerang"));
                 }
-                System.out.println(" = = processing "+i);
+                logger.info(" = = processing "+i);
                 cache.putAll(hashMap);
             }
         });
@@ -55,7 +59,7 @@ public class GenerateCacheHelper {
                 for (int j = 0 ; j < 1000; j++) {
                     hashMap.put(UUID.randomUUID().toString(), new User(UUID.randomUUID().toString(), 21, "Bandung"));
                 }
-                System.out.println(" = = = processing "+i);
+                logger.info(" = = = processing "+i);
                 cache.putAll(hashMap);
             }
         });
@@ -64,23 +68,26 @@ public class GenerateCacheHelper {
     public void sendToCacheWithVersion() {
         final RemoteCache cache = cacheManager.getCache("lele-cache");
         final List<String> uuidList = Arrays.asList(uuids.split(","));
-        executor.execute(() -> {
-            for (int j = 0 ; j < 100; j++) {
-                for(String uuid : uuidList) {
-                    Long version = 0L;
-                    MetadataValue metadataValue = cache.getWithMetadata(uuid);
-                    if(metadataValue == null) {
-                        cache.put(uuid, UUID.randomUUID().toString());
+        for(int i = 0 ; i < 3; i ++) {
+            executor.execute(() -> {
+                for (int j = 0 ; j < 300; j++) {
+                    for(String uuid : uuidList) {
+                        MetadataValue metadataValue = cache.getWithMetadata(uuid);
+                        if(metadataValue == null) {
+                            cache.put(uuid, UUID.randomUUID().toString());
+                        }
+                        else {
+                            Long version = metadataValue.getVersion();
+                            logger.info("=== processing {} before version {} ", uuid, version);
+                            version = version +1;
+                            cache.replaceWithVersion(uuid, UUID.randomUUID().toString(), version);
+                            logger.info("=== processing {} after version {} ", uuid, version);
+                        }
                     }
-                    else {
-                        version = metadataValue.getVersion() + 1;
-                        cache.replaceWithVersion(uuid, UUID.randomUUID().toString(), version);
-                        System.out.println("=== processing "+uuid+" version "+ version);
-                    }
+                    logger.info("== finish processing {} ", j);
                 }
-                System.out.println("== processing "+j);
-            }
-        });
+            });
+        }
     }
 
     private String uuids = "e069baea-bc54-4443-8292-2e0391a8de0c,"+
