@@ -51,4 +51,9 @@ public class IndexController {
         return "good";
     }
 
+    @GetMapping(path = "/generate-with-version")
+    public String generateCacheToRHDGWithVersion() {
+        generateCacheHelper.sendToCacheWithVersion();
+        return "good";
+    }
 }
