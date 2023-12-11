@@ -4,7 +4,7 @@ A sample Spring Boot 3 and Infinispan integration. A multiple instances of Infin
 ## Running Infinispan
 Pull from Docker Hub
 ```
-$ docker pull infinispan/server:14.0.2.Final
+$ docker pull quay.io/infinispan/server:13.0.10.Final
 ```
 
 Run the first instance
@@ -33,7 +33,7 @@ We can validate the result after we login into Infinispan server,
 
 ## Frameworks
 - Spring Boot 3.0.4
-- Infinispan 14.0.7.Final
+- Infinispan 13.0.10.Final and 14.0.7.Final
 
 ## Infinispan Configuration
 We are using below XML configuration for setting up a distributed cache.
