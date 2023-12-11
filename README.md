@@ -11,21 +11,21 @@ Run the first instance
 ```
 $ docker run -p 11222:11222 -e USER=admin -e PASS=password \
         --add-host=HOST:192.168.56.1 \ 
-        infinispan/server:14.0.2.Final
+        quay.io/infinispan/server:13.0.10.Final
 ```
 
 Run the second instance
 ```
 $ docker run -p 11223:11222 -e USER=admin -e PASS=password \
         --add-host=HOST:192.168.56.1 \ 
-        infinispan/server:14.0.2.Final
+        quay.io/infinispan/server:13.0.10.Final
 ```
 
 Run the third instance
 ```
 $ docker run -p 11224:11222 -e USER=admin -e PASS=password \
         --add-host=HOST:192.168.56.1 \ 
-        infinispan/server:14.0.2.Final
+        quay.io/infinispan/server:13.0.10.Final
 ```
 
 We can validate the result after we login into Infinispan server,
@@ -80,4 +80,6 @@ $ curl -kv http://localhost:8080/get-user?name=lele
 ```
 
 Sample data stored on `user-cache`
-![user-cache-explorer](images/user-cache.png)
+![user-cache-explorer](images/datagrid13.png)
+
+![user-cache-explorer](images/datagrid13-detail.png)
