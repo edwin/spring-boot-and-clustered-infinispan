@@ -66,7 +66,7 @@ public class GenerateCacheHelper {
     }
 
     public void sendToCacheWithVersion() {
-        final RemoteCache cache = cacheManager.getCache("lele-cache");
+        final RemoteCache cache = cacheManager.getCache("user-cache");
         final List<String> uuidList = Arrays.asList(uuids.split(","));
         for(int i = 0 ; i < 3; i ++) {
             executor.execute(() -> {
@@ -91,14 +91,11 @@ public class GenerateCacheHelper {
     }
 
     public void sendToCacheWithRegularPut() {
-        final RemoteCache cache = cacheManager.getCache("lele-cache");
-        final List<String> uuidList = Arrays.asList(uuids.split(","));
-        for(int i = 0 ; i < 5; i ++) {
+        final RemoteCache cache = cacheManager.getCache("Balance");
+        for(int i = 0 ; i < 10; i ++) {
             executor.execute(() -> {
-                for (int j = 0 ; j < 100; j++) {
-                    for(String uuid : uuidList) {
-                        cache.put(uuid, UUID.randomUUID().toString());
-                    }
+                for (int j = 0 ; j < 500000; j++) {
+                    cache.put(UUID.randomUUID().toString(), UUID.randomUUID().toString());
                     logger.info(" = = finish processing {} ", j);
                 }
             });
