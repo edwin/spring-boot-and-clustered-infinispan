@@ -56,4 +56,10 @@ public class IndexController {
         generateCacheHelper.sendToCacheWithVersion();
         return "good";
     }
+
+    @GetMapping(path = "/generate-with-regular-put")
+    public String generateCacheToRHDGWithRegularPut() {
+        generateCacheHelper.sendToCacheWithRegularPut();
+        return "good";
+    }
 }
