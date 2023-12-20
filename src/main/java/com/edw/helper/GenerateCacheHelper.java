@@ -77,11 +77,10 @@ public class GenerateCacheHelper {
                             cache.put(uuid, UUID.randomUUID().toString());
                         }
                         else {
-                            Long version = metadataValue.getVersion();
-                            logger.info("=== processing {} before version {} ", uuid, version);
-                            version = version +1;
-                            cache.replaceWithVersion(uuid, UUID.randomUUID().toString(), version);
-                            logger.info("=== processing {} after version {} ", uuid, version);
+                            String value = UUID.randomUUID().toString();
+                            logger.info("=== processing {} before version {} with value {} ", uuid, metadataValue.getVersion(), value);
+                            cache.replaceWithVersion(uuid, value, metadataValue.getVersion());
+                            logger.info("=== processing {} after version {} with value {}", uuid, metadataValue.getVersion(), value);
                         }
                     }
                     logger.info("== finish processing {} ", j);
